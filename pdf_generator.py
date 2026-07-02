@@ -135,7 +135,7 @@ def genereaza_pdf_cv(date_utilizator, experienta_optimizata):
 
     pdf.set_text_color(0, 0, 0)
     pdf.set_font("DejaVu", "", 11)
-
+    pdf.set_x(pdf.l_margin)
     if experienta_optimizata.strip():
 
         linii = experienta_optimizata.split("\n")
@@ -144,23 +144,19 @@ def genereaza_pdf_cv(date_utilizator, experienta_optimizata):
 
             linie = linie.strip()
 
-            if linie:
+            if not linie:
+                continue
 
-                if linie.startswith("-") or linie.startswith("•"):
+            pdf.set_x(pdf.l_margin)
 
-                    pdf.multi_cell(
-                        0,
-                        7,
-                        linie
-                    )
+            if not (linie.startswith("-") or linie.startswith("•")):
+                linie = f"• {linie}"
 
-                else:
-
-                    pdf.multi_cell(
-                        0,
-                        7,
-                        f"• {linie}"
-                    )
+            pdf.multi_cell(
+                pdf.epw,
+                7,
+                linie
+            )
 
     else:
 
@@ -173,7 +169,7 @@ def genereaza_pdf_cv(date_utilizator, experienta_optimizata):
     pdf.ln(5)
 
     # declaratie
-    
+
     pdf.set_draw_color(220, 220, 220)
     pdf.line(20, pdf.get_y(), 190, pdf.get_y())
 

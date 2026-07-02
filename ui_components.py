@@ -1,5 +1,5 @@
 
-from ai_integration import optimizeaza_text_experienta
+#from ai_integration import optimizeaza_text_experienta
 from ats_scanner import calculeaza_scor_ats
 
 import streamlit as st
@@ -91,11 +91,33 @@ def afiseaza_interfata():
         st.header("2. Verificare compatibilitate ATS")
         text_cv = st.text_area("Lipește aici textul din CV-ul tău:")
         text_job = st.text_area("Lipește aici cerințele jobului (Job Description):")
-        
+       
         if st.button("Scanează Compatibilitate"):
             if text_cv and text_job:
-                st.info("Se calculează scorul de potrivire...")
+                # Apelul către modulul Membrului 3
+                rezultat = calculeaza_scor_ats(text_cv, text_job)
+ 
+                # Bara de progres + procentul final
+                st.progress(rezultat["scor"] / 100)
+                st.metric("Scor compatibilitate ATS", f"{rezultat['scor']}%")
+                st.caption(rezultat["mesaj"])
+ 
+                # Coloane: tehnologii găsite vs. lipsă
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.subheader("✅ Găsite în CV")
+                    if rezultat["gasite"]:
+                        for skill in rezultat["gasite"]:
+                            st.write(f"- {skill}")
+                    else:
+                        st.write("_Niciuna dintre cerințe nu a fost găsită._")
+                with col2:
+                    st.subheader("❌ Lipsă din CV")
+                    if rezultat["lipsa"]:
+                        for skill in rezultat["lipsa"]:
+                            st.write(f"- {skill}")
+                    else:
+                        st.write("_Felicitări, ai toate cerințele!_")
             else:
                 st.warning("Asigură-te că ai completat ambele zone de text!")
-
     return rezultat
