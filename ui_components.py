@@ -1,4 +1,7 @@
 
+from ai_integration import optimizeaza_text_experienta
+from ats_scanner import calculeaza_scor_ats
+
 import streamlit as st
 
 def afiseaza_interfata():
@@ -94,4 +97,5 @@ def afiseaza_interfata():
                 st.info("Se calculează scorul de potrivire...")
             else:
                 st.warning("Asigură-te că ai completat ambele zone de text!")
+
     return rezultat
