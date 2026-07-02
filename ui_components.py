@@ -1,4 +1,4 @@
-
+from ai_integration import optimizeaza_text_experienta
 import streamlit as st
 
 def afiseaza_interfata():
@@ -23,7 +23,10 @@ def afiseaza_interfata():
         
         if st.button("Generează CV Profesional"):
             if experienta_bruta:
-                st.info("Aici va apărea textul optimizat de AI și butonul de download PDF...")
+                with st.spinner("Inteligența Artificială îți analizează și optimizează textul..."):
+                    rezultat_ai = optimizeaza_text_experienta(experienta_bruta)
+                    st.subheader("Experiența Ta Optimizată:")
+                    st.write(rezultat_ai)
             else:
                 st.warning("Te rog să introduci o scurtă descriere!")
 
